@@ -5,6 +5,23 @@ require 'cgi'
 
 $stdout.sync = true
 
+
+helpers do
+  def protect!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    username = ENV['BASIC_AUTH_USERNAME']
+    password = ENV['BASIC_AUTH_PASSWORD']
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [username, password]
+  end
+end
+
 get '/' do
   content_type :text
   "AppVeyorのnotificationをLingrに通知するためのBotです。"
@@ -20,12 +37,16 @@ get '/:room' do
 end
 
 post '/:room' do
+  protect!
   content_type :text
   appveyor = JSON.parse(params[:payload])['eventData']
   repo = appveyor['repository']
   status = appveyor['status']
   commit = appveyor['commitMessage']
   build = appveyor['buildUrl']
+  if reqest.user_agent != 'appveyor-lingrbot 1.0'
+    return
+  end
   if appveyor['isPullRequiest']
     compare = "https://github.com/#{repo}/pull/#{appveyor['pullRequestId']}"
   else
