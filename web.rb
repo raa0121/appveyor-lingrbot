@@ -18,7 +18,7 @@ helpers do
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
     username = ENV['BASIC_AUTH_USERNAME']
     password = ENV['BASIC_AUTH_PASSWORD']
-    p @auth.credentials, username, password
+    p @auth.credentials[0], @auth.credentials[1].chomp, username, password
     @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials[0] == username && @auth.credentials[1].chomp == password
   end
 end
