@@ -41,6 +41,7 @@ end
 post '/:room' do
   protect!
   content_type :text
+  p params
   appveyor = JSON.parse(params[:payload])['eventData']
   repo = appveyor['repository']
   status = appveyor['status']
