@@ -46,7 +46,7 @@ post '/:room' do
   status = appveyor['status']
   commit = appveyor['commitMessage']
   build = appveyor['buildUrl']
-  if reqest.user_agent != 'appveyor-lingrbot 1.0'
+  if request.user_agent != 'appveyor-lingrbot 1.0'
     return
   end
   if appveyor['isPullRequiest']
