@@ -43,7 +43,7 @@ post '/:room' do
   content_type :text
   appveyor = JSON.parse(request.body.read)['eventData']
   p appveyor
-  repo = appveyor['repository']
+  repo = appveyor['repositoryName']
   status = appveyor['status']
   commit = appveyor['commitMessage']
   build = appveyor['buildUrl']
