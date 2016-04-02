@@ -53,5 +53,5 @@ post '/:room' do
     compare = "https://github.com/#{repo}/commit/#{appveyor['commitId']}"
   end
   text = CGI.escape("[#{repo}]#{status}:#{commit}\n#{compare}\n#{build}")
-  open("http://lingr.com/api/room/say?room=#{params[:room]}&bot=AppVeyor&text=#{text}&bot_verifier=tWM4vvT5UspnUjY1aeHkB16OkSc").read
+  open("http://lingr.com/api/room/say?room=#{params[:room]}&bot=AppVeyor&text=#{text}&bot_verifier=fad360f1383c91d65a7af1fb56ce8ba6c4cd534b").read
 end
