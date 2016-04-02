@@ -46,14 +46,11 @@ post '/:room' do
   status = appveyor['status']
   commit = appveyor['commitMessage']
   build = appveyor['buildUrl']
-  if request.user_agent != 'appveyor-lingrbot 1.0'
-    return
-  end
   if appveyor['isPullRequiest']
     compare = "https://github.com/#{repo}/pull/#{appveyor['pullRequestId']}"
   else
     compare = "https://github.com/#{repo}/commit/#{appveyor['commitId']}"
   end
-  text = CGI.escape("[#{repo}#{status}:#{commit}\n#{compare}\n#{build}")
+  text = CGI.escape("[#{repo}]#{status}:#{commit}\n#{compare}\n#{build}")
   open("http://lingr.com/api/room/say?room=#{params[:room]}&bot=AppVeyor&text=#{text}&bot_verifier=tWM4vvT5UspnUjY1aeHkB16OkSc").read
 end
